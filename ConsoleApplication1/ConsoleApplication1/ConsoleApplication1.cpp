@@ -1,10 +1,15 @@
 ﻿// ConsoleApplication1.cpp : このファイルには 'main' 関数が含まれています。プログラム実行の開始と終了がそこで行われます。
 //
 
-#include <cstdio>
+#include <ios>     // std::left, std::right
+#include <iomanip> // std::setw(int), std::setfill(char)
+#include <chrono>
+#include <iostream>
 
 int main()
 {
+    auto start = std::chrono::system_clock::now(); // 計測開始時間
+
     int base = 10000;     // 基底
     int n = 8400;         // 計算項数
     int i{};                // ループ変数
@@ -25,9 +30,16 @@ int main()
             numerator[i] = temp % denom;
             temp /= denom;
         }
-        printf("%04d", out + temp / base);
+        std::cout << std::setfill('0') << std::right << std::setw(4) << (out + temp / base);
         out = temp % base;
     }
+
+    auto end = std::chrono::system_clock::now();  // 計測終了時間
+
+    auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count(); //処理に要した時間をミリ秒に変換
+    
+    std::cout << elapsed << " ms";
+
     return 0;
 }
 
