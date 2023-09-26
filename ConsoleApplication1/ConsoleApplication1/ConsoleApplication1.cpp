@@ -5,6 +5,7 @@
 #include <iomanip> // std::setw(int), std::setfill(char)
 #include <chrono>
 #include <iostream>
+#include <cstdio>
 
 int main()
 {
@@ -16,11 +17,16 @@ int main()
     int temp{};             // 一時変数/繰り上がり
     int out{};              // 出力値
     int denom{};            // 分母
-    int numerator[8401]{};  // 分子
+
+#ifdef __GNUC__ // gcc
+    int numerator[8400]{ [0 ... 4] = base / 5 };  // 分子
+#else
+    int numerator[8400]{};  // 分子
 
     for (i = 0; i < n; i++) {
         numerator[i] = base / 5;
     }
+#endif
 
     for (n = 8400; n > 0; n -= 14) {
         temp = 0;
@@ -30,7 +36,8 @@ int main()
             numerator[i] = temp % denom;
             temp /= denom;
         }
-        std::cout << std::setfill('0') << std::right << std::setw(4) << (out + temp / base);
+        //std::cout << std::setfill('0') << std::right << std::setw(4) << (out + temp / base); // this is more expensive than std::printf
+        std::printf("%04d", out + temp / base);
         out = temp % base;
     }
 
