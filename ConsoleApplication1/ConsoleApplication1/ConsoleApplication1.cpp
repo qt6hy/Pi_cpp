@@ -19,7 +19,7 @@ int main()
     int denom{};            // 分母
 
 #ifdef __GNUC__ // gcc
-    int numerator[8400]{ [0 ... 4] = base / 5 };  // 分子
+    int numerator[8400]{ [0 ... 8399] = base / 5 };  // 分子
 #else
     int numerator[8400]{};  // 分子
 
